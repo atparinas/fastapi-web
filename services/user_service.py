@@ -1,7 +1,10 @@
 
 from models.user import User
 
+def login_user(email: str, password: str):
+    # TODO: check if email and password match for user
 
+    return User('Andy', email, password)
 
 def user_count() -> int:
     pass
