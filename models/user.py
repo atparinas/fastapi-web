@@ -1,14 +1,18 @@
 from datetime import datetime
+import sqlalchemy as sa
+from models.model_base import SQLAlchemyBase
 
 
-class User:
+class User(SQLAlchemyBase):
 
-    def __init__(self, name, email, hashed_password):
-        self.id = 1
-        self.name = name
-        self.email = email
-        self.hashed_password = hashed_password
-        self.created_at = None
-        self.profile_image_url = ""
-        self.last_login: datetime = None
+    __tablename__ = 'users'
+
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    name = sa.Column(sa.String)
+    email = sa.Column(sa.String, index=True, unique=True)
+    hashed_password = sa.Column(sa.String)
+    created_at = sa.Column(sa.DateTime, default=datetime.now, index=True)
+    profile_image = sa.Column(sa.String, default=datetime.now)
+    last_login = sa.Column(sa.DateTime)
+
 
