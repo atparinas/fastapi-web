@@ -7,6 +7,7 @@ from fastapi.templating import Jinja2Templates
 from viewmodels.account.account_viewmodel import AccountViewModel
 from viewmodels.account.register_viewmodel import RegisterViewModel
 from services import user_service
+from infrastructure import cookie_auth
 
 templates = Jinja2Templates(directory="templates")
 router = APIRouter()
@@ -33,12 +34,13 @@ async def register(request: Request):
          return templates.TemplateResponse("account/register.html", vm.to_dict())
 
     # TODO: Create Account
-    # user_service.create_account(name=vm.name, email=vm.email, password=vm.password)
+    acount = user_service.create_account(name=vm.name, email=vm.email, password=vm.password)
 
     # TODO: Login the user
+    response = RedirectResponse(url='/account', status_code=status.HTTP_302_FOUND)
+    cookie_auth.set_auth(response, acount.id )
 
-    print("Redirecting")
-    return RedirectResponse(url='/account', status_code=status.HTTP_302_FOUND)
+    return response
 
 
 @router.get('/account/login')
