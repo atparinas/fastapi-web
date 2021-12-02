@@ -13,6 +13,7 @@ class LoginViewModel(ViewModelBase):
 
     async def load(self):
         form = await self.request.form()
+
         self.email = form.get('email', '').lower().strip()
         self.password = form.get('password', '').strip()
 

@@ -20,7 +20,9 @@ def __hash_text(text: str) -> str:
 
 
 def get_user_id_from_auth_cookie(request: Request) -> Optional[int]:
+
     if auth_key not in request.cookies:
+        print("No Authkey")
         return None
 
     val = request.cookies[auth_key]

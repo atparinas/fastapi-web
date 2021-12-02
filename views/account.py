@@ -49,9 +49,9 @@ def login(request: Request):
 
 
 @router.post('/account/login')
-def login(request: Request):
+async def login(request: Request):
     vm = LoginViewModel(request)
-    vm.load()
+    await vm.load()
 
     if vm.error:
         return templates.TemplateResponse("account/login.html", vm.to_dict())

@@ -43,18 +43,22 @@ def latest_releases(limit: int = 10) -> List[Package]:
 
 
 def get_package_by_id(package_name: str) -> Optional[Package]:
-    package = Package(
-        package_name=package_name,
-        summary="This is the summary",
-        description="Full Description Here",
-        home_page="https://www.google.com",
-        package_license="MIT",
-        author_name="Andy Parinas",
-        maintainers=[]
-    )
 
-    return package
+    session = db_session.create_session()
+    try:
+        package = session.query(Package).filter(Package.id == package_name).first()
+        return package
+    finally:
+        session.close()
 
 
 def get_latest_release_for_package(package_name: str):
-    return Release('1.2.0,', datetime.now())
+
+    session = db_session.create_session()
+    try:
+        release = session.query(Release).filter(Release.package_id == package_name) \
+            .order_by(Release.created_date.desc()) \
+            .first()
+        return release
+    finally:
+        session.close()
