@@ -3,3 +3,5 @@ uvicorn
 jinja2
 starlette~=0.16.0
 python-multipart
+progressbar2
+python-dateutil
