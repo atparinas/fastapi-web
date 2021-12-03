@@ -9,9 +9,10 @@ router = APIRouter()
 
 
 @router.get("/", response_class=HTMLResponse)
-def index(request: Request):
+async def index(request: Request):
 
     vm = IndexViewModel(request)
+    await vm.load()
     context = vm.to_dict()
 
     return templates.TemplateResponse("home/index.html", context=context)

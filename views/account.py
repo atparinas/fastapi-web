@@ -15,8 +15,9 @@ router = APIRouter()
 
 
 @router.get('/account')
-def index(request: Request):
+async def index(request: Request):
     vm = AccountViewModel(request)
+    await vm.load()
     return templates.TemplateResponse("account/index.html", vm.to_dict())
 
 
@@ -34,7 +35,7 @@ async def register(request: Request):
     if vm.error:
          return templates.TemplateResponse("account/register.html", vm.to_dict())
 
-    account = user_service.create_account(name=vm.name, email=vm.email, password=vm.password)
+    account = await user_service.create_account(name=vm.name, email=vm.email, password=vm.password)
 
     response = RedirectResponse(url='/account', status_code=status.HTTP_302_FOUND)
     cookie_auth.set_auth(response, account.id )
@@ -56,7 +57,7 @@ async def login(request: Request):
     if vm.error:
         return templates.TemplateResponse("account/login.html", vm.to_dict())
 
-    user = user_service.login_user(vm.email, vm.password)
+    user = await user_service.login_user(vm.email, vm.password)
 
     if not user:
         vm.error = "The account does not exist or the password is wrong"
